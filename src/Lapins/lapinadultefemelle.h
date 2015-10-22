@@ -13,7 +13,7 @@ public:
     /**
      * @brief LapinAdulteFemelle Constructeur par défaut.
      */
-    LapinAdulteFemelle();
+    LapinAdulteFemelle(const unsigned int age);
     /**
      * @brief ~LapinAdulteFemelle Destructeur.
      */

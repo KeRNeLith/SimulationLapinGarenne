@@ -21,6 +21,9 @@ public:
      * @brief ~Lapereau Destructeur.
      */
     virtual ~Lapereau();
+
+    // Accesseurs
+    bool isMale() const { return m_male; }
 };
 
 #endif // LAPEREAU_H

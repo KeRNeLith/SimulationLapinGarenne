@@ -1,7 +1,7 @@
 #include "lapinadulte.h"
 
-LapinAdulte::LapinAdulte()
-    : Lapin()
+LapinAdulte::LapinAdulte(const unsigned int age)
+    : Lapin(age, 50)
 {
 }
 
