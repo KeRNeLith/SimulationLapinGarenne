@@ -7,14 +7,14 @@
 class Lapin // should be abstract class
 {
 protected:
-    unsigned short m_survivalRate;  ///< Taux de survie du lapin (0% - 100%).
-    unsigned int m_age;             ///< Âge du lapin (en mois).
+    unsigned short m_survivalRate;  ///< Taux de survie du lapin (0% - 100%). => Useless
+    unsigned int m_age;             ///< Âge du lapin (en mois pour les lapereaux et en années pour les adultes).   => Just for lapereau
 
 public:
     /**
      * @brief Lapin Constructeur par défaut.
      */
-    Lapin(const unsigned int age = 0, const unsigned short survivalRate = 50);
+    Lapin(const unsigned short survivalRate = 50, const unsigned int age = 0);
     /**
      * @brief ~Lapin Destructeur.
      */

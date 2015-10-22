@@ -1,6 +1,6 @@
 #include "lapin.h"
 
-Lapin::Lapin(const unsigned int age, const unsigned short survivalRate)
+Lapin::Lapin(const unsigned short survivalRate, const unsigned int age)
     : m_survivalRate(survivalRate)
     , m_age(age)
 {
