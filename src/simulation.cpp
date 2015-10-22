@@ -92,7 +92,7 @@ void Simulation::evolveToAdult(std::uniform_int_distribution<>& survivalDist,
     // On verifie que le lapin survit à sa periode lapereau (20%)
     if (survivalDist(randEngine) < 20)
     {
-// TODO tenir compte des mois restants jusqu'a la fin de la premiere année du lapin
+        // Tiens compte des mois restant avant la première année du lapin pour l'affecter au bon mois de l'année
         unsigned int beforeFirstYear = 12 - itLapereau->getAge();
         const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear + 1) % 12;
 //std::cout << birthdayMonthIndex << " " << currentMonthIndex << " " << itLapereau->getAge() << " " << beforeFirstYear << std::endl;
