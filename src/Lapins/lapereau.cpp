@@ -3,7 +3,8 @@
 #include "../general/general.h"
 
 Lapereau::Lapereau()
-    : Lapin(20)
+    : Lapin()
+    , m_age(0)
 {
     // Distribution uniforme pour déterminer le sexe (1 chance sur 2)
     std::uniform_int_distribution<> sexDist(0, 1);
@@ -12,4 +13,9 @@ Lapereau::Lapereau()
 
 Lapereau::~Lapereau()
 {
+}
+
+void Lapereau::updateAge(unsigned int update)
+{
+    m_age += update;
 }

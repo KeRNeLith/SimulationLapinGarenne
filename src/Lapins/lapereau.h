@@ -11,6 +11,7 @@ class Lapereau
 {
 private:
     bool m_male;    ///< Booléen pour savoir si la lapin est un mâle ou une femelle.
+    unsigned int m_age; ///< Âge du lapin (en mois).
 
 public:
     /**
@@ -22,8 +23,11 @@ public:
      */
     virtual ~Lapereau();
 
+    void updateAge(unsigned int update = 1);
+
     // Accesseurs
     bool isMale() const { return m_male; }
+    unsigned int getAge() const { return m_age; }
 };
 
 #endif // LAPEREAU_H

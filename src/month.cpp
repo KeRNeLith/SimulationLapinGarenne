@@ -38,32 +38,15 @@ void Month::update()
 
     // On traite les lapins ayant entre 2 et 14 ans car les lapins ayant 1 an ont déjà été traité lors de leur affectation au groupe 0 année
     // Application des taux de mortalité
-    // Applique le taux de survie de 50% sur les lapins entre 2 et 10 ans
+    // Applique le taux de survie de 50% sur les lapins entre 2 et 10 ans et 40% diminué de 10% par année sur les lapins entre 11 et 14 ans
+    int survivalRate = 50;
     std::uniform_int_distribution<> survivalDist(0, 99);
     for (unsigned int i = 2 ; i <= 10 ; i++)
     {
-        unsigned int nbDeathM = 0;
-        unsigned int nbDeathF = 0;
-        for (unsigned int j = 0 ; j < m_adultsMale[i].size() ; i++)
-        {
-            if (survivalDist(randEngine) < 50)
-                nbDeathM++;
-        }
+        // Pour le taux dégressif entre 11 et 14 ans
+        if (i >= 11)
+            survivalRate -= 10;
 
-        for (unsigned int j = 0 ; j < m_adultsFemale[i].size() ; i++)
-        {
-            if (survivalDist(randEngine) < 50)
-                nbDeathF++;
-        }
-
-        m_adultsMale[i].resize(m_adultsMale[i].size() - nbDeathM);
-        m_adultsFemale[i].resize(m_adultsFemale[i].size() - nbDeathF);
-    }
-
-    // Applique le taux de survie de 40% diminué de 10% par année sur les lapins entre 11 et 14 ans
-    int survivalRate = 40;
-    for (unsigned int i = 11 ; i < m_adultsMale.size() ; i++)
-    {
         unsigned int nbDeathM = 0;
         unsigned int nbDeathF = 0;
         for (unsigned int j = 0 ; j < m_adultsMale[i].size() ; i++)
@@ -80,7 +63,6 @@ void Month::update()
 
         m_adultsMale[i].resize(m_adultsMale[i].size() - nbDeathM);
         m_adultsFemale[i].resize(m_adultsFemale[i].size() - nbDeathF);
-        survivalRate -= 10;
     }
 
     // TODO faire les calculs de portées des femelles
