@@ -11,16 +11,20 @@ Month::~Month()
 {
 }
 
-void Month::addMale()
+void Month::addMale(const rabbits_t number)
 {
-    m_adultsMale[0]++;
+    m_adultsMale[0] += number;
 }
 
-void Month::addFemale()
+void Month::addFemale(const rabbits_t number)
 {
-    m_adultsFemale[0]++;
+    m_adultsFemale[0] += number;
+
     // Détermine les mois où le lapin femelle adulte aura ses portées
-    // TODO
+    for (rabbits_t i = 0 ; i < number ; i++)
+    {
+        // TODO
+    }
 }
 
 void Month::update()
@@ -70,13 +74,15 @@ void Month::update()
     // TODO faire les calculs de portées des femelles
 }
 
-rabbits_t Month::getNbRabbit()
+rabbits_t Month::getNbRabbit() const
 {
     rabbits_t count = 0;
 
+    // Nombre de lapins adultes mâles
     for (unsigned int i = 0 ; i < m_adultsMale.size() ; i++)
         count += m_adultsMale[i];
 
+    // Nombre de lapins adultes femelles
     for (unsigned int i = 0 ; i < m_adultsFemale.size() ; i++)
         count += m_adultsFemale[i];
 

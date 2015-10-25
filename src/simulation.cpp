@@ -14,8 +14,7 @@ Simulation::Simulation()
         m_months.push_back(Month(i));
 
     // TODO REMOVE Test avec une population de depart
-    for (int i = 0 ; i < 3 ; i++)
-        m_lapereau.push_back(Lapereau());
+    m_youngRabbits.addYoungRabbit(24);
 }
 
 Simulation::~Simulation()
@@ -50,8 +49,10 @@ void Simulation::simulateNextMonth()
     for (unsigned int i = 0 ; i < maxNbThread ; ++i)
         updateAgePartFunc[i].get();*/
 
-    std::uniform_int_distribution<> survivalDist(0, 99);
+
     const unsigned int currentMonthIndex = m_monthSimulated % 12;
+
+    /*std::uniform_int_distribution<> survivalDist(0, 99);
 
     auto it = m_lapereau.begin();
     while (it != m_lapereau.end())
@@ -78,14 +79,17 @@ void Simulation::simulateNextMonth()
         }
         else
             it++;
-    }
+    }*/
 
+    // Met à jour les données de simulation pour les lapereaux
+    m_youngRabbits.update();    // TODO get vector of new adults
+    // Met à jour les données de simulation pour les lapins adultes concernés
     m_months[currentMonthIndex].update();
 
     m_monthSimulated++;
 }
 
-void Simulation::evolveToAdult(std::uniform_int_distribution<>& survivalDist,
+/*void Simulation::evolveToAdult(std::uniform_int_distribution<>& survivalDist,
                                const unsigned int currentMonthIndex,
                                std::vector<Lapereau>::iterator itLapereau)
 {
@@ -103,14 +107,16 @@ void Simulation::evolveToAdult(std::uniform_int_distribution<>& survivalDist,
     }
 
     m_lapereau.erase(itLapereau);
-}
+}*/
 
-rabbits_t Simulation::getNbRabbit()
+rabbits_t Simulation::getNbRabbit() const
 {
     rabbits_t count = 0;
+    // Nombre de lapins adultes
     for (unsigned int i = 0 ; i < m_months.size() ; i++)
         count += m_months[i].getNbRabbit();
-    count += m_lapereau.size();
+    // Nombre de lapereaux
+    count += m_youngRabbits.getNbRabbit();
 
     return count;
 }

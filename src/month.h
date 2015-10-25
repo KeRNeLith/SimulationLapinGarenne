@@ -36,12 +36,16 @@ public:
      */
     ~Month();
 
-    void addMale();
-    void addFemale();
+    void addMale(const rabbits_t number = 1);
+    void addFemale(const rabbits_t number = 1);
 
     void update();
 
-    rabbits_t getNbRabbit();
+    /**
+     * @brief getNbRabbit Calcul et retourne le nombre total de lapins vivants sur le mois courant.
+     * @return Nombre de lapins vivants sur le mois courant.
+     */
+    rabbits_t getNbRabbit() const;
 };
 
 #endif // MONTH_H
