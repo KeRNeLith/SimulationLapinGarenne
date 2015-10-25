@@ -105,9 +105,9 @@ void Simulation::evolveToAdult(std::uniform_int_distribution<>& survivalDist,
     m_lapereau.erase(itLapereau);
 }
 
-unsigned int Simulation::getNbRabbit()
+rabbits_t Simulation::getNbRabbit()
 {
-    unsigned int count = 0;
+    rabbits_t count = 0;
     for (unsigned int i = 0 ; i < m_months.size() ; i++)
         count += m_months[i].getNbRabbit();
     count += m_lapereau.size();

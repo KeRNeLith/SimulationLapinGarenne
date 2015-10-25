@@ -3,8 +3,7 @@
 
 #include <vector>
 
-#include "Lapins/lapinadultemale.h"
-#include "Lapins/lapinadultefemelle.h"
+#include "general/general.h"
 
 /**
  * @brief The Month class Gère le stockage des données de simulation d'un mois de l'année.
@@ -13,10 +12,9 @@ class Month
 {
 private:
     unsigned int m_monthNumber;
-    std::vector< std::vector< LapinAdulteMale > > m_adultsMale;
-    std::vector< std::vector< LapinAdulteFemelle > > m_adultsFemale;
+    std::vector< rabbits_t > m_adultsMale;
+    std::vector< rabbits_t > m_adultsFemale;
 
-    std::vector< LapinAdulteFemelle* > m_tempAdultsFemale;
     /*std::vector<LapinAdulteMale> m_adulteMale;      ///< Données de simulation liés aux lapins adultes mâles de moins de 11 ans.
     std::vector<LapinAdulteMale> m_adulteMale11;    ///< Données de simulation liés aux lapins adultes mâles de 11 ans.
     std::vector<LapinAdulteMale> m_adulteMale12;    ///< Données de simulation liés aux lapins adultes mâles de 12 ans.
@@ -43,7 +41,7 @@ public:
 
     void update();
 
-    unsigned int getNbRabbit();
+    rabbits_t getNbRabbit();
 };
 
 #endif // MONTH_H

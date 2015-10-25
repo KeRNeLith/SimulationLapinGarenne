@@ -34,7 +34,7 @@ public:
 
     void simulateNextMonth();
 
-    unsigned int getNbRabbit();
+    rabbits_t getNbRabbit();
 };
 
 #endif // SIMULATION_H
