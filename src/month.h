@@ -12,6 +12,7 @@ class Month
 {
 private:
     unsigned int m_monthNumber;
+    rabbits_t m_newBorns;
     std::vector< rabbits_t > m_adultsMale;
     std::vector< rabbits_t > m_adultsFemale;
 
@@ -40,6 +41,9 @@ public:
     void addFemale(const rabbits_t number = 1);
 
     void update();
+
+    // Accesseurs
+    rabbits_t getNewBorns();
 
     /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapins vivants sur le mois courant.

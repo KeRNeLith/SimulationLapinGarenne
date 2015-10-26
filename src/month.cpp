@@ -35,6 +35,8 @@ void Month::update()
         m_adultsFemale[i] = m_adultsFemale[i-1];
         m_adultsMale[i] = m_adultsMale[i-1];
     }
+    m_adultsFemale[0] = 0;
+    m_adultsMale[0] = 0;
 
     // On traite les lapins ayant entre 2 et 14 ans car les lapins ayant 1 an ont déjà été traité lors de leur affectation au groupe 0 année
     // Application des taux de mortalité
@@ -72,6 +74,13 @@ void Month::update()
     }
 
     // TODO faire les calculs de portées des femelles
+}
+
+rabbits_t Month::getNewBorns()
+{
+    const rabbits_t newBorn = m_newBorns;
+    m_newBorns = 0;     // Remet à 0 les nouveaux né du mois
+    return newBorn;
 }
 
 rabbits_t Month::getNbRabbit() const

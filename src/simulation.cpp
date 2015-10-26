@@ -50,64 +50,33 @@ void Simulation::simulateNextMonth()
         updateAgePartFunc[i].get();*/
 
 
+    /// Boucle principale de la simultation d'un mois
     const unsigned int currentMonthIndex = m_monthSimulated % 12;
 
-    /*std::uniform_int_distribution<> survivalDist(0, 99);
+    // Met à jour les données de simulation pour les lapereaux (et récupère les nouveaux adultes)
+    std::vector< std::pair<rabbits_t, rabbits_t > > newAdults = m_youngRabbits.update();
 
-    auto it = m_lapereau.begin();
-    while (it != m_lapereau.end())
+    // Tiens compte des mois restant avant la première année du lapin pour l'affecter au bon mois de l'année
+    unsigned int beforeFirstYear = 12 /* Un an */ - 5 /* 5 mois */;
+    for (unsigned int i = 0 ; i < newAdults.size() ; i++)
     {
-        it->updateAge();
-        // Entrée dans la période de maturation (5 à 8 mois)
-        if (it->getAge() >= 5)
-        {
-            // Si on est encore dans la période de maturation
-            if (it->getAge() < 9)
-            {
-// TODO Choisir une loi pour devenir adulte
-                std::uniform_int_distribution<> distribution(0, 3);
-                int rand = distribution(randEngine);
-                // Devient adulte
-                if (rand == 0)
-                    evolveToAdult(survivalDist, currentMonthIndex, it);
-                else
-                    it++;
-            }
-            // Evolution automatique en adulte (> 9 mois)
-            else
-                evolveToAdult(survivalDist, currentMonthIndex, it);
-        }
-        else
-            it++;
-    }*/
+        const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear + 1) % 12;
 
-    // Met à jour les données de simulation pour les lapereaux
-    m_youngRabbits.update();    // TODO get vector of new adults
+        m_months[birthdayMonthIndex].addFemale(newAdults[i].first);
+        m_months[birthdayMonthIndex].addMale(newAdults[i].second);
+
+        beforeFirstYear--;
+    }
+
     // Met à jour les données de simulation pour les lapins adultes concernés
     m_months[currentMonthIndex].update();
 
+    // Fait naitre tous les lapereaux prévu pour ce mois ci
+    m_youngRabbits.addYoungRabbit(m_months[currentMonthIndex].getNewBorns());
+
+    // Fin de la simulation du mois
     m_monthSimulated++;
 }
-
-/*void Simulation::evolveToAdult(std::uniform_int_distribution<>& survivalDist,
-                               const unsigned int currentMonthIndex,
-                               std::vector<Lapereau>::iterator itLapereau)
-{
-    // On verifie que le lapin survit à sa periode lapereau (20%)
-    if (survivalDist(randEngine) < 20)
-    {
-        // Tiens compte des mois restant avant la première année du lapin pour l'affecter au bon mois de l'année
-        unsigned int beforeFirstYear = 12 - itLapereau->getAge();
-        const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear + 1) % 12;
-//std::cout << birthdayMonthIndex << " " << currentMonthIndex << " " << itLapereau->getAge() << " " << beforeFirstYear << std::endl;
-        if (itLapereau->isMale())
-            m_months[birthdayMonthIndex].addMale();
-        else
-            m_months[birthdayMonthIndex].addFemale();
-    }
-
-    m_lapereau.erase(itLapereau);
-}*/
 
 rabbits_t Simulation::getNbRabbit() const
 {
