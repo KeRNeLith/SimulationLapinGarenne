@@ -17,18 +17,14 @@ void Month::addMale(const rabbits_t number)
     m_adultsMale[0] += number;
 }
 
-void Month::addFemale(const rabbits_t number)
+std::vector<rabbits_t> Month::addFemale(const rabbits_t number)
 {
     m_adultsFemale[0] += number;
 
-    // Détermine les mois où le lapin femelle adulte aura ses portées
-    for (rabbits_t i = 0 ; i < number ; i++)
-    {
-        // TODO
-    }
+    return computeLitters(number);
 }
 
-void Month::update()
+std::vector<rabbits_t> Month::update()
 {
     // Fait progresser les lapins d'un an (les lapins de 15 ans sont automatiquement tués)
     for (unsigned int i = m_adultsFemale.size()-1 ; i > 0 ; i--)
@@ -74,7 +70,45 @@ void Month::update()
         m_adultsFemale[i] -= nbDeathF;
     }
 
-    // TODO faire les calculs de portées des femelles
+    // Calculs de portées des femelles qui restent en vie pour l'année suivante
+    return std::vector<rabbits_t>();// TEMPROARY
+}
+
+void Month::addNewBorns(const rabbits_t number)
+{
+    m_newBorns += number;
+}
+
+std::vector<rabbits_t> Month::computeLitters(const rabbits_t nbRabbits)
+{
+    // Tableau des 12 mois de l'année qui va contenir le nombre de lapereaux mis à bas sur une année (mois par mois)
+    std::vector<rabbits_t> monthsLitters(12, 0);
+
+    std::uniform_int_distribution<> littersDist(4, 8);              // TODO choisir la distribution (plus sur le 5 6 et 7)
+    // Détermine les mois où le lapin femelle adulte aura ses portées
+    for (rabbits_t rabbit = 0 ; rabbit < nbRabbits ; rabbit++)
+    {
+        int nbLitters = littersDist(randEngine);
+
+        // Initialise avec les index des mois de l'année (en prenant pour mois 0 le mois courant)
+        // Exemple si le mois courant est Juin, on répartit les portée de Juin à Juin de l'année suivante.
+        std::vector<unsigned int> possibleLitters(12);
+        for (unsigned int i = 0 ; i < 12 ; i++)
+            possibleLitters[i] = (i + m_monthNumber + 1 /* Voir x */) % 12; // x : La prochaine naissance ne peut être que le mois suivant au mieux, décale donc le premier mois possible pour les portées
+
+        std::uniform_int_distribution<> youngRabbitPerLitterDist(3, 6); // TODO choisir la distribution
+        // On calcule les différentes portées à affecter à la hase
+        for (unsigned int i = nbLitters ; i > 0 ; i--)
+        {
+            std::uniform_int_distribution<> selectMonthDist(0, possibleLitters.size()-1);
+
+            int selectedIndex = selectMonthDist(randEngine);    // Sélectionne un index correspondant à un mois de l'année encore disponible
+            monthsLitters[possibleLitters[selectedIndex]] += youngRabbitPerLitterDist(randEngine);  // Ajoute une portée avec un nombre de lapereaux à ce mois
+            possibleLitters.erase(possibleLitters.begin() + selectedIndex); // Supprime le mois pour ne pas avoir 2 portées pour ce même mois
+        }
+    }
+
+    return monthsLitters;
 }
 
 rabbits_t Month::getNewBorns()
@@ -98,3 +132,30 @@ rabbits_t Month::getNbRabbit() const
 
     return count;
 }
+
+// Version 1 compute litters (not optimized)
+/*std::uniform_real_distribution<> selectMonthDist(0, 1);
+std::uniform_int_distribution<> littersDist(4, 8);              // TODO choisir les distributions (plus sur le 5 6 et 7)
+std::uniform_int_distribution<> youngRabbitPerLitterDist(3, 6);
+
+int nbLitters = littersDist(randEngine);
+std::vector<bool> litters(12, false);
+
+unsigned int i = 1;
+while (nbLitters > 0)
+{
+    unsigned int monthIndex = (i + m_monthNumber) % 12;
+    // Si le mois n'a pas encore de portée assignée
+    if (!litters[monthIndex])
+    {
+        // Mois sélectionné pour mettre à bas une portée
+        if (selectMonthDist(randEngine) > XX)
+        {
+            litters[monthIndex].flip();
+            monthsLitters[monthIndex] += youngRabbitPerLitterDist(randEngine);  // Ajoute une portée avec un nombre de lapereaux
+            nbLitters--;
+        }
+    }
+
+    i++;
+}*/

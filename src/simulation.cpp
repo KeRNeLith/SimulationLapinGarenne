@@ -5,12 +5,11 @@
 
 #include "general/general.h"
 
-#include <iostream>
 Simulation::Simulation()
     : m_monthSimulated(0)
 {
     // Initialise les 12 mois de l'année
-    for (int i = 1 ; i <= 12 ; i++)
+    for (unsigned int i = 0 ; i < 12 ; i++)
         m_months.push_back(Month(i));
 
     // TODO REMOVE Test avec une population de depart
@@ -63,12 +62,12 @@ void Simulation::simulateNextMonth()
         const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear) % 12;
 
         // Affecte les adultes mâles et femelles au mois de leur anniversaire
-        m_months[birthdayMonthIndex].addFemale(newAdults[i].first);
+        std::vector<rabbits_t> tmp = m_months[birthdayMonthIndex].addFemale(newAdults[i].first);
         m_months[birthdayMonthIndex].addMale(newAdults[i].second);
     }
 
     // Met à jour les données de simulation pour les lapins adultes concernés
-    m_months[currentMonthIndex].update();
+    std::vector<rabbits_t> tmp = m_months[currentMonthIndex].update();
 
     // Fait naitre tous les lapereaux prévu pour ce mois ci
     m_youngRabbits.addYoungRabbit(m_months[currentMonthIndex].getNewBorns());
