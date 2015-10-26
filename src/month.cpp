@@ -2,6 +2,7 @@
 
 Month::Month(unsigned int month)
     : m_monthNumber(month)
+    , m_newBorns(0)
     , m_adultsMale(15, 0)
     , m_adultsFemale(15, 0)
 {
@@ -54,7 +55,7 @@ void Month::update()
         rabbits_t nbDeathF = 0;
         // Tire les taux de survie pour les lapins mâles
         const rabbits_t nbRabbitsM = m_adultsMale[i];
-        for (rabbits_t j = 0 ; j < nbRabbitsM ; i++)
+        for (rabbits_t j = 0 ; j < nbRabbitsM ; j++)
         {
             if (survivalDist(randEngine) < survivalRate)
                 nbDeathM++;
@@ -62,7 +63,7 @@ void Month::update()
 
         // Tire les taux de survie pour les lapins femelles
         const rabbits_t nbRabbitsF = m_adultsFemale[i];
-        for (rabbits_t j = 0 ; j < nbRabbitsF ; i++)
+        for (rabbits_t j = 0 ; j < nbRabbitsF ; j++)
         {
             if (survivalDist(randEngine) < survivalRate)
                 nbDeathF++;

@@ -56,16 +56,15 @@ void Simulation::simulateNextMonth()
     // Met à jour les données de simulation pour les lapereaux (et récupère les nouveaux adultes)
     std::vector< std::pair<rabbits_t, rabbits_t > > newAdults = m_youngRabbits.update();
 
-    // Tiens compte des mois restant avant la première année du lapin pour l'affecter au bon mois de l'année
-    unsigned int beforeFirstYear = 12 /* Un an */ - 5 /* 5 mois */;
-    for (unsigned int i = 0 ; i < newAdults.size() ; i++)
+    for (unsigned int i = 0, nbMonths = 5 ; i < newAdults.size() ; i++, nbMonths++)
     {
-        const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear + 1) % 12;
+        // Tiens compte des mois restant avant la première année du lapin pour l'affecter au bon mois de l'année
+        const unsigned int beforeFirstYear = (12 /* Un an */ - nbMonths /* X mois avant anniversaire */);
+        const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear) % 12;
 
+        // Affecte les adultes mâles et femelles au mois de leur anniversaire
         m_months[birthdayMonthIndex].addFemale(newAdults[i].first);
         m_months[birthdayMonthIndex].addMale(newAdults[i].second);
-
-        beforeFirstYear--;
     }
 
     // Met à jour les données de simulation pour les lapins adultes concernés
