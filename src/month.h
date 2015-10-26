@@ -19,19 +19,11 @@ private:
     /**
      * @brief computeLitters Calcule une répartition des portées pour nbRabbits hase sur une année à partir du mois courant.
      * @param nbRabbits Nombre de hase à considérer.
+     * @param beginMonth Mois à partir duquel on commence à générer des portées de lapereaux.
+     * @param nbMonths Nombre de mois sur lequel on génère des portées.
      * @return Tableau représentant le nombre de lapereaux par mois qui naitront au cours de l'année qui suit.
      */
-    std::vector<rabbits_t> computeLitters(const rabbits_t nbRabbits);
-    /*std::vector<LapinAdulteMale> m_adulteMale;      ///< Données de simulation liés aux lapins adultes mâles de moins de 11 ans.
-    std::vector<LapinAdulteMale> m_adulteMale11;    ///< Données de simulation liés aux lapins adultes mâles de 11 ans.
-    std::vector<LapinAdulteMale> m_adulteMale12;    ///< Données de simulation liés aux lapins adultes mâles de 12 ans.
-    std::vector<LapinAdulteMale> m_adulteMale13;    ///< Données de simulation liés aux lapins adultes mâles de 13 ans.
-    std::vector<LapinAdulteMale> m_adulteMale14;    ///< Données de simulation liés aux lapins adultes mâles de 14 ans.
-    std::vector<LapinAdulteFemelle> m_adulteFemelle;    ///< Données de simulation liés aux lapins adultes femelles de moins de 11 ans.
-    std::vector<LapinAdulteFemelle> m_adulteFemelle11;  ///< Données de simulation liés aux lapins adultes femelles de 11 ans.
-    std::vector<LapinAdulteFemelle> m_adulteFemelle12;  ///< Données de simulation liés aux lapins adultes femelles de 12 ans.
-    std::vector<LapinAdulteFemelle> m_adulteFemelle13;  ///< Données de simulation liés aux lapins adultes femelles de 13 ans.
-    std::vector<LapinAdulteFemelle> m_adulteFemelle14;  ///< Données de simulation liés aux lapins adultes femelles de 14 ans.*/
+    std::vector<rabbits_t> computeLitters(const rabbits_t nbRabbits, const unsigned int beginMonth, const unsigned int nbMonths = 12);
 
 public:
     /**
@@ -48,12 +40,14 @@ public:
      * @param number Nombre de lapins à ajouter.
      */
     void addMale(const rabbits_t number = 1);
+
     /**
      * @brief addFemale Ajoute un nombre de lapins adultes femelles au mois.
      * @param number Nombre de lapins à ajouter.
+     * @param beginMonth Mois à partir duquel on autorise les portées.
      * @return Tableau représentant le nombre de lapereaux par mois qui naitront au cours de l'année qui suit grâce aux hase ajoutées.
      */
-    std::vector<rabbits_t> addFemale(const rabbits_t number = 1);
+    std::vector<rabbits_t> addFemale(const rabbits_t number, const unsigned int beginMonth);
 
     /**
      * @brief update Met à jour les données de simulation du mois pour un pas de temps.

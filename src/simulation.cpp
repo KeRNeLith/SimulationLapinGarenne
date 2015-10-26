@@ -62,18 +62,25 @@ void Simulation::simulateNextMonth()
         const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear) % 12;
 
         // Affecte les adultes mâles et femelles au mois de leur anniversaire
-        std::vector<rabbits_t> tmp = m_months[birthdayMonthIndex].addFemale(newAdults[i].first);
+        affectLitters(m_months[birthdayMonthIndex].addFemale(newAdults[i].first, currentMonthIndex));
         m_months[birthdayMonthIndex].addMale(newAdults[i].second);
     }
 
     // Met à jour les données de simulation pour les lapins adultes concernés
-    std::vector<rabbits_t> tmp = m_months[currentMonthIndex].update();
+    affectLitters(m_months[currentMonthIndex].update());
 
     // Fait naitre tous les lapereaux prévu pour ce mois ci
     m_youngRabbits.addYoungRabbit(m_months[currentMonthIndex].getNewBorns());
 
     // Fin de la simulation du mois
     m_monthSimulated++;
+}
+
+void Simulation::affectLitters(const std::vector<rabbits_t> litters)
+{
+    const unsigned int nbLittersMonths = litters.size();
+    for (unsigned int i = 0 ; i < nbLittersMonths ; i++)
+        m_months[i].addNewBorns(litters[i]);
 }
 
 rabbits_t Simulation::getNbRabbit() const

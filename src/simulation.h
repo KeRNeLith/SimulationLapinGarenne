@@ -17,11 +17,13 @@ private:
     unsigned int m_monthSimulated;  ///< Nombre de mois simulés.
     std::vector<Month> m_months;    ///< Données de simulation sur l'année.
     YoungRabbit m_youngRabbits;     ///< Données de simulation pour tous les lapereaux.
-    //std::vector<Lapereau> m_lapereau;   ///< Données de simulation liés aux lapereaux.
 
-    /*void evolveToAdult(std::uniform_int_distribution<>& survivalDist,
-                       const unsigned int currentMonthIndex,
-                       std::vector<Lapereau>::iterator itLapereau);*/
+    /**
+     * @brief affectLitters Affecte tous les lapereaux issues des portées générées aux bons mois en les ajoutants à ceux qui existent déjà.
+     * NOTE : Ces lapereaux ne sont pas encore nés, il ne verront le jours que lorsque les mois en question seront mis à jour)
+     * @param litters Tableau des portées par mois (Chaque indice i contient le nombre de lapereaux qui verront le jour au i-ème mois).
+     */
+    void affectLitters(const std::vector<rabbits_t> litters);
 
 public:
     /**
@@ -33,6 +35,9 @@ public:
      */
     ~Simulation();
 
+    /**
+     * @brief simulateNextMonth Avance la simulation de un mois.
+     */
     void simulateNextMonth();
 
     /**

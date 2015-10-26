@@ -17,11 +17,19 @@ void Month::addMale(const rabbits_t number)
     m_adultsMale[0] += number;
 }
 
-std::vector<rabbits_t> Month::addFemale(const rabbits_t number)
+std::vector<rabbits_t> Month::addFemale(const rabbits_t number, const unsigned int beginMonth)
 {
     m_adultsFemale[0] += number;
 
-    return computeLitters(number);
+    // Nombre de mois restant avant le premier anniversaire
+    unsigned int nbMonths;
+    if (beginMonth >= m_monthNumber)
+        nbMonths = 12 - (beginMonth - m_monthNumber);
+    else
+        nbMonths = m_monthNumber - beginMonth;
+
+    // Applique un pro rata de nombre de portée jusqu'au premier anniversaire
+    return computeLitters(number, beginMonth, nbMonths);
 }
 
 std::vector<rabbits_t> Month::update()
@@ -39,8 +47,9 @@ std::vector<rabbits_t> Month::update()
     // Application des taux de mortalité
     // Applique le taux de survie de 50% sur les lapins entre 2 et 10 ans et 40% diminué de 10% par année sur les lapins entre 11 et 14 ans
     int survivalRate = 50;
-    const unsigned int nbGeneration = m_adultsMale.size()-1;
+    const unsigned int nbGeneration = m_adultsFemale.size()-1;
     std::uniform_int_distribution<> survivalDist(0, 99);
+    rabbits_t nbFemale = 0;     // Nombre de hase qui vont donner des lapereaux sur l'année qui suit
     for (unsigned int i = 2 ; i <= nbGeneration ; i++)
     {
         // Pour le taux dégressif entre 11 et 14 ans
@@ -68,10 +77,15 @@ std::vector<rabbits_t> Month::update()
         // Tue les lapins nécessaires
         m_adultsMale[i] -= nbDeathM;
         m_adultsFemale[i] -= nbDeathF;
+
+        // Met à jour le nombre hases qui donneront des lapereaux
+        nbFemale += m_adultsFemale[i];
     }
 
+    nbFemale += m_adultsFemale[1];  // Hases n'ayant pas encore été comptés (celle ayant 1 an)
+
     // Calculs de portées des femelles qui restent en vie pour l'année suivante
-    return std::vector<rabbits_t>();// TEMPROARY
+    return computeLitters(nbFemale, m_monthNumber);
 }
 
 void Month::addNewBorns(const rabbits_t number)
@@ -79,12 +93,12 @@ void Month::addNewBorns(const rabbits_t number)
     m_newBorns += number;
 }
 
-std::vector<rabbits_t> Month::computeLitters(const rabbits_t nbRabbits)
+std::vector<rabbits_t> Month::computeLitters(const rabbits_t nbRabbits, const unsigned int beginMonth, const unsigned int nbMonths)
 {
     // Tableau des 12 mois de l'année qui va contenir le nombre de lapereaux mis à bas sur une année (mois par mois)
     std::vector<rabbits_t> monthsLitters(12, 0);
 
-    std::uniform_int_distribution<> littersDist(4, 8);              // TODO choisir la distribution (plus sur le 5 6 et 7)
+    std::uniform_int_distribution<> littersDist(std::trunc(4*nbMonths/(double)12.0), std::trunc(8*nbMonths/(double)12.0));  // TODO choisir la distribution (plus sur le 5 6 et 7)
     // Détermine les mois où le lapin femelle adulte aura ses portées
     for (rabbits_t rabbit = 0 ; rabbit < nbRabbits ; rabbit++)
     {
@@ -92,9 +106,9 @@ std::vector<rabbits_t> Month::computeLitters(const rabbits_t nbRabbits)
 
         // Initialise avec les index des mois de l'année (en prenant pour mois 0 le mois courant)
         // Exemple si le mois courant est Juin, on répartit les portée de Juin à Juin de l'année suivante.
-        std::vector<unsigned int> possibleLitters(12);
-        for (unsigned int i = 0 ; i < 12 ; i++)
-            possibleLitters[i] = (i + m_monthNumber + 1 /* Voir x */) % 12; // x : La prochaine naissance ne peut être que le mois suivant au mieux, décale donc le premier mois possible pour les portées
+        std::vector<unsigned int> possibleLitters(nbMonths);
+        for (unsigned int i = 0 ; i < nbMonths ; i++)
+            possibleLitters[i] = (i + beginMonth + 1 /* Voir x */) % 12; // x : La prochaine naissance ne peut être que le mois suivant au mieux, décale donc le premier mois possible pour les portées
 
         std::uniform_int_distribution<> youngRabbitPerLitterDist(3, 6); // TODO choisir la distribution
         // On calcule les différentes portées à affecter à la hase
