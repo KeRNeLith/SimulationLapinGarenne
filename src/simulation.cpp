@@ -1,5 +1,7 @@
 #include "simulation.h"
 
+#include <iomanip>
+#include <fstream>
 #include <future>
 #include <thread>
 
@@ -70,10 +72,56 @@ void Simulation::simulateNextMonth()
     affectLitters(m_months[currentMonthIndex].update());
 
     // Fait naitre tous les lapereaux prévu pour ce mois ci
-    m_youngRabbits.addYoungRabbit(m_months[currentMonthIndex].getNewBorns());
+    m_youngRabbits.addYoungRabbit(m_months[currentMonthIndex].giveBirth());
 
     // Fin de la simulation du mois
     m_monthSimulated++;
+}
+
+void Simulation::writeToFile(const std::string& filename)
+{
+    // Ecrit les données de simulation dans un fichier
+    std::ofstream file;
+
+    file.open(filename.c_str(), std::fstream::out | std::fstream::app);
+    if (!file.fail())
+    {
+        file << "---------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+        file << "Mois simulé : " << m_monthSimulated << std::endl << std::endl;
+        file.close();
+    }
+
+    m_youngRabbits.writeToFile(filename);
+
+    file.open(filename.c_str(), std::fstream::out | std::fstream::app);
+    if (!file.fail())
+    {
+        file << std::endl << "Lapins Adultes :" << std::endl;
+        file << "\t\t\t\t\t";
+        for (unsigned int i = 0 ; i < m_months.size() ; i++)
+            file << std::setw(32) << m_months[i].monthName();
+        file << std::endl;
+
+        const unsigned int nbGenerations = m_months[0].getMaleAdults().size();
+        for (unsigned int i = 0 ; i < nbGenerations ; i++)
+        {
+            file << std::setw(2) << i << " ans : \t\t\t";
+            for (unsigned int j = 0 ; j < m_months.size() ; j++)
+            {
+                file << "| F : " << std::setw(10) << m_months[j].getFemaleAdults()[i] << " M : " << std::setw(10) << m_months[j].getMaleAdults()[i] << " |";
+            }
+
+            file << std::endl;
+        }
+
+        file << "futurs lapereaux :\t";
+        for (unsigned int i = 0 ; i < m_months.size() ; i++)
+            file << std::setw(32) << m_months[i].getNewBorns();
+        file << std::endl;
+
+        file << std::endl << "Nombre total de lapin : " << getNbRabbit() << std::endl << std::endl;
+        file.close();
+    }
 }
 
 void Simulation::affectLitters(const std::vector<rabbits_t> litters)

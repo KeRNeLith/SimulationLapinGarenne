@@ -41,6 +41,12 @@ public:
     void simulateNextMonth();
 
     /**
+     * @brief writeToFile Enregistre les données de simulation actuelles dans un fichier.
+     * @param filename Nom du fichier dans lequel enregistrer.
+     */
+    void writeToFile(const std::string& filename);
+
+    /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapins vivants dans la simulation.
      * @return Nombre de lapins vivants dans la simulation.
      */

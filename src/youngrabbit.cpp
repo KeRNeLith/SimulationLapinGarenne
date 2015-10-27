@@ -1,5 +1,7 @@
 #include "youngrabbit.h"
 
+#include <fstream>
+#include <iomanip>
 #include <random>
 #include <utility>
 
@@ -83,6 +85,20 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
     }
 
     return newAdultsByMonth;
+}
+
+void YoungRabbit::writeToFile(const std::string& filename)
+{
+    std::ofstream file;
+    file.open(filename.c_str(), std::fstream::out | std::fstream::app);
+
+    if (!file.fail())
+    {
+        file << "Lapereaux :" << std::endl;
+        for (unsigned int i = 0 ; i < m_youngRabbits.size() ; i++)
+            file << i << " mois : F = " << std::setw(10) << m_youngRabbits[i].first << "\tM = " << std::setw(10) << m_youngRabbits[i].second << std::endl;
+        file.close();
+    }
 }
 
 rabbits_t YoungRabbit::getNbRabbit() const

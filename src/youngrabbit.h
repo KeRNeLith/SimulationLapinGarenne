@@ -15,6 +15,7 @@ private:
      * @brief m_youngRabbits Stocke le nombre de lapereaux par tranche de mois, chaque mois est représenté par un indice dans le vecteur.
      * Chaque tranche possède un nombre de lapereaux mâles et un nombre de lapereaux femelles.
      * Il y a 9 tranches, soit de la naissance au huitième mois.
+     * Le premier élément des paires sont les femelles, et le second sont les mâles.
      */
     std::vector< std::pair<rabbits_t, rabbits_t> > m_youngRabbits;
 
@@ -41,6 +42,12 @@ public:
      * Les paires stockent en first le nombre de femelle pour le mois, alors que second donne le nombre de mâles.
      */
     std::vector< std::pair<rabbits_t, rabbits_t> > update();
+
+    /**
+     * @brief writeToFile Enregistre les données de simulation des lapereaux dans un fichier.
+     * @param filename Nom du fichier dans lequel enregistrer.
+     */
+    void writeToFile(const std::string& filename);
 
     /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapereau vivants dans la simulation.

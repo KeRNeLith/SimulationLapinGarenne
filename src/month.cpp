@@ -1,5 +1,7 @@
 #include "month.h"
 
+#include <fstream>
+
 Month::Month(unsigned int month)
     : m_monthNumber(month)
     , m_newBorns(0)
@@ -125,11 +127,72 @@ std::vector<rabbits_t> Month::computeLitters(const rabbits_t nbRabbits, const un
     return monthsLitters;
 }
 
-rabbits_t Month::getNewBorns()
+const std::string Month::monthName() const
+{
+    std::string name = "";
+    switch (m_monthNumber)
+    {
+    case 0:
+        name = "Janvier";
+        break;
+    case 1:
+        name = "Février";
+        break;
+    case 2:
+        name = "Mars";
+        break;
+    case 3:
+        name = "Avril";
+        break;
+    case 4:
+        name = "Mai";
+        break;
+    case 5:
+        name = "Juin";
+        break;
+    case 6:
+        name = "Juillet";
+        break;
+    case 7:
+        name = "Août";
+        break;
+    case 8:
+        name = "Septembre";
+        break;
+    case 9:
+        name = "Octobre";
+        break;
+    case 10:
+        name = "Novembre";
+        break;
+    case 11:
+        name = "Décembre";
+        break;
+    }
+
+    return name;
+}
+
+rabbits_t Month::getNewBorns() const
+{
+    return m_newBorns;
+}
+
+rabbits_t Month::giveBirth()
 {
     const rabbits_t newBorn = m_newBorns;
     m_newBorns = 0;     // Remet à 0 les nouveaux né du mois
     return newBorn;
+}
+
+std::vector< rabbits_t > Month::getMaleAdults() const
+{
+    return m_adultsMale;
+}
+
+std::vector< rabbits_t > Month::getFemaleAdults() const
+{
+    return m_adultsFemale;
 }
 
 rabbits_t Month::getNbRabbit() const
@@ -146,30 +209,3 @@ rabbits_t Month::getNbRabbit() const
 
     return count;
 }
-
-// Version 1 compute litters (not optimized)
-/*std::uniform_real_distribution<> selectMonthDist(0, 1);
-std::uniform_int_distribution<> littersDist(4, 8);              // TODO choisir les distributions (plus sur le 5 6 et 7)
-std::uniform_int_distribution<> youngRabbitPerLitterDist(3, 6);
-
-int nbLitters = littersDist(randEngine);
-std::vector<bool> litters(12, false);
-
-unsigned int i = 1;
-while (nbLitters > 0)
-{
-    unsigned int monthIndex = (i + m_monthNumber) % 12;
-    // Si le mois n'a pas encore de portée assignée
-    if (!litters[monthIndex])
-    {
-        // Mois sélectionné pour mettre à bas une portée
-        if (selectMonthDist(randEngine) > XX)
-        {
-            litters[monthIndex].flip();
-            monthsLitters[monthIndex] += youngRabbitPerLitterDist(randEngine);  // Ajoute une portée avec un nombre de lapereaux
-            nbLitters--;
-        }
-    }
-
-    i++;
-}*/

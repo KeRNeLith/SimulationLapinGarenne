@@ -64,16 +64,40 @@ public:
     // Accesseurs
     /**
      * @brief getNewBorns Récupère le nombre de lapereaux qui doivent naitre ce mois ci.
+     * @return Nombre de lapereaux qui doivent naitre.
+     */
+    rabbits_t getNewBorns() const;
+
+    /**
+     * @brief giveBirth Récupère le nombre de lapereaux qui doivent naitre ce mois ci.
      * NOTE : Réinitilise le compteur de lapereaux à faire naitre.
      * @return Nombre de lapereaux qui doivent naitre.
      */
-    rabbits_t getNewBorns();
+    rabbits_t giveBirth();
+
+    /**
+     * @brief getMaleAdults Récupère le nombre de lapins mâles répartient par année.
+     * @return Tableau du nombre de lapins adultes mâles par tranches d'âge.
+     */
+    std::vector< rabbits_t > getMaleAdults() const;
+
+    /**
+     * @brief getFemaleAdults Récupère le nombre de lapins femelles répartient par année.
+     * @return Tableau du nombre de lapins adultes femelles par tranches d'âge.
+     */
+    std::vector< rabbits_t > getFemaleAdults() const;
 
     /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapins vivants sur le mois courant.
      * @return Nombre de lapins vivants sur le mois courant.
      */
     rabbits_t getNbRabbit() const;
+
+    /**
+     * @brief monthName Retourne le nom mois correspondant.
+     * @return Nom du mois courant.
+     */
+    const std::string monthName() const;
 };
 
 #endif // MONTH_H
