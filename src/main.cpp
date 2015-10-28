@@ -5,7 +5,7 @@
 int main()
 {
     //const unsigned int nbMonth = 180;
-    const unsigned int nbMonth = 80;
+    const unsigned int nbMonth = 100;
 
     Simulation simu;
     simu.writeToFile("simu.log");
