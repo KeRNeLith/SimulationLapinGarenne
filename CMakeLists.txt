@@ -1,5 +1,8 @@
-project(CroissancePopulation)
+project(CroissancePopulation CXX)
 cmake_minimum_required(VERSION 2.8)
+
+find_package(Threads REQUIRED)
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
 
 # Customize build options
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG=1")
@@ -21,4 +24,4 @@ file(GLOB_RECURSE cp_src ./*.cpp)
 file(GLOB_RECURSE cp_headers ./*.h)
 
 add_executable(${PROJECT_NAME} ${cp_headers} ${cp_src})
-
+target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} )
