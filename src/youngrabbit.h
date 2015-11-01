@@ -12,9 +12,9 @@ class YoungRabbit
 {
 private:
     /**
-     * @brief m_youngRabbits Stocke le nombre de lapereaux par tranche de mois, chaque mois est représenté par un indice dans le vecteur.
-     * Chaque tranche possède un nombre de lapereaux mâles et un nombre de lapereaux femelles.
-     * Il y a 9 tranches, soit de la naissance au huitième mois.
+     * @brief m_youngRabbits Stocke le nombre de lapereaux par mois, chaque mois étant représenté par un indice dans le vecteur.
+     * Pour chaque indice est stockée une paire contenant le nombre de lapereaux mâles et un nombre de lapereaux femelles.
+     * Le vecteur ne contient que 9 mois, soit de la naissance au huitième mois.
      * Le premier élément des paires sont les femelles, et le second sont les mâles.
      */
     std::vector< std::pair<rabbits_t, rabbits_t> > m_youngRabbits;

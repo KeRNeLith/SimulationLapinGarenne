@@ -50,16 +50,15 @@ void Simulation::simulateNextMonth()
     for (unsigned int i = 0 ; i < maxNbThread ; ++i)
         updateAgePartFunc[i].get();*/
 
-
-    /// Boucle principale de la simultation d'un mois
+    /// Boucle principale de la simulation d'un mois
     const unsigned int currentMonthIndex = m_monthSimulated % 12;
 
     // Met à jour les données de simulation pour les lapereaux (et récupère les nouveaux adultes)
-    std::vector< std::pair<rabbits_t, rabbits_t > > newAdults = m_youngRabbits.update();
+    std::vector< std::pair< rabbits_t, rabbits_t > > newAdults = m_youngRabbits.update();
 
     for (unsigned int i = 0, nbMonths = 5 ; i < newAdults.size() ; i++, nbMonths++)
     {
-        // Tiens compte des mois restant avant la première année du lapin pour l'affecter au bon mois de l'année
+        // Tient compte des mois restants avant la première année du lapin pour l'affecter au bon mois de l'année
         const unsigned int beforeFirstYear = (12 /* Un an */ - nbMonths /* X mois avant anniversaire */);
         const unsigned int birthdayMonthIndex = (currentMonthIndex + beforeFirstYear) % 12;
 
@@ -99,7 +98,7 @@ void Simulation::writeToFile(const std::string& filename)
         file << std::endl << "Lapins Adultes :" << std::endl;
         file << "\t\t\t\t\t";
         for (unsigned int i = 0 ; i < m_months.size() ; i++)
-            file << std::setw(32) << m_months[i].monthName();
+            file << std::setw(32) << m_months[i].monthName().c_str();
         file << std::endl;
 
         const unsigned int nbGenerations = m_months[0].getMaleAdults().size();

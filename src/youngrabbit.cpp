@@ -1,5 +1,8 @@
 #include "youngrabbit.h"
 
+#if defined(MULTI_THREADING)
+#include <future>
+#endif  // endif MULTI_THREADING
 #include <fstream>
 #include <iomanip>
 #include <random>
@@ -13,8 +16,7 @@ YoungRabbit::YoungRabbit()
 YoungRabbit::~YoungRabbit()
 {
 }
-#include <iostream>
-#include <future>
+
 void YoungRabbit::addYoungRabbit(const rabbits_t nbRabbit)
 {
     if (nbRabbit <= 0)
@@ -77,7 +79,9 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
 {
     std::vector< std::pair< rabbits_t, rabbits_t > > newAdultsByMonth(5, std::make_pair(0, 0)); // Stocke les évolutions à l'âge adulte des lapereaux (du mois 5 à 9)
     // Les lapereaux de plus de 8 mois passe automatiquement adultes
-    newAdultsByMonth[4] = m_youngRabbits[m_youngRabbits.size()-1];
+    // TODO appliquer de vrai taux de survie aléatoire
+    newAdultsByMonth[4].first = (rabbits_t)(20 / 100.0) * m_youngRabbits[m_youngRabbits.size()-1].first;                // TODO A revoir, modifier 20% par une valeur plus adéquate
+    newAdultsByMonth[4].second = (rabbits_t)(20 / 100.0) * m_youngRabbits[m_youngRabbits.size() - 1].second;			// TODO A revoir, modifier 20% par une valeur plus adéquate
 
     // Fait progresser les lapereaux d'un mois
     for (unsigned int i = m_youngRabbits.size()-1 ; i > 0 ; i--)
@@ -86,10 +90,10 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
 
     // Lois de distribution pour le taux de survie et la chance de passer à la maturité adulte
     std::uniform_int_distribution<> survivalDist(0, 99);
-    std::uniform_int_distribution<> distribution(0, 3); // TODO distri pour le mois de maturité
+    std::uniform_int_distribution<> distribution(0, 3); // TODO distri pour le mois de maturité ==> gaussien
 
-    // Parcours les lapereaux qui sont candidats à l'évolution en maturité adulte
-    for (unsigned int i = 5, monthsIndex = 0 ; i < m_youngRabbits.size() ; i++, monthsIndex++)
+    // Parcours des lapereaux qui sont candidats à l'évolution en maturité adulte
+    for (unsigned int i = 5, monthsIndex = 0 ; i < m_youngRabbits.size() - 1 ; i++, monthsIndex++)
     {
         // Nombre de passage à la maturité adulte pour les mâles et les femelles pour la génération courante
         rabbits_t nbAdultsF = 0;
@@ -105,7 +109,7 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
             {
                 nbAdultsF++;
                 // On verifie que le lapin survit à sa periode lapereau (20%)
-                if (survivalDist(randEngine) < 20)
+                if (survivalDist(randEngine) < 20)					// TODO revoir la valeur de 20% ==> évolutif en fonction de la période
                     newAdultsByMonth[monthsIndex].first++;
             }
         }

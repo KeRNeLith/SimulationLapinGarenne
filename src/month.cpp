@@ -100,7 +100,7 @@ std::vector<rabbits_t> Month::computeLitters(const rabbits_t nbRabbits, const un
     // Tableau des 12 mois de l'année qui va contenir le nombre de lapereaux mis à bas sur une année (mois par mois)
     std::vector<rabbits_t> monthsLitters(12, 0);
 
-    std::uniform_int_distribution<> littersDist(std::trunc(4*nbMonths/(double)12.0), std::trunc(8*nbMonths/(double)12.0));  // TODO choisir la distribution (plus sur le 5 6 et 7)
+    std::uniform_int_distribution<> littersDist(std::trunc(4*nbMonths/(double)12.0), std::trunc(8*nbMonths/(double)12.0));  // TODO passer en gaussien (plus sur le 5 6 et 7)
     // Détermine les mois où le lapin femelle adulte aura ses portées
     for (rabbits_t rabbit = 0 ; rabbit < nbRabbits ; rabbit++)
     {
