@@ -5,7 +5,7 @@
 int main()
 {
     //const unsigned int nbMonth = 180;
-    const unsigned int nbMonth = 80;
+    const unsigned int nbMonth = 110;
 
     Simulation simu;
     simu.writeToFile("simu.log");
@@ -13,7 +13,7 @@ int main()
     {
         simu.simulateNextMonth();
         simu.writeToFile("simu.log");
-        std::cout <<"Mois " << i << " => Nombre de lapin : " << simu.getNbRabbit() << std::endl;
+        std::cout <<"Mois " << i+1 << " => Nombre de lapin : " << simu.getNbRabbit() << std::endl;
     }
 
     return 0;

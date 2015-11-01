@@ -13,18 +13,64 @@ YoungRabbit::YoungRabbit()
 YoungRabbit::~YoungRabbit()
 {
 }
-
+#include <iostream>
+#include <future>
 void YoungRabbit::addYoungRabbit(const rabbits_t nbRabbit)
 {
+    if (nbRabbit <= 0)
+        return;
+
     std::uniform_int_distribution<> sexDist(0, 1);
-    for (rabbits_t i = 0 ; i < nbRabbit ; i++)
+    rabbits_t nbFemales = 0;
+
+#if defined(MULTI_THREADING)
+    if (nbRabbit >= 30000)
     {
-        // Tire au sort le sexe du lapereau
-        if (sexDist(randEngine) == 1)
-            m_youngRabbits[0].first++;  // Augmente le nombre de femelles
-        else
-            m_youngRabbits[0].second++; // Augmente le nombre de mâles
+        rabbits_t nbComputePerThread = nbRabbit/MAXTHREADS;
+        std::vector< std::future<rabbits_t> > drawPartFunc;
+
+        rabbits_t count = 0;
+        // Répartit le nombre de tirages aléatoire à faire sur MAXTHREADS threads
+        for (unsigned int i = 0 ; i < MAXTHREADS ; i++)
+        {
+            // Complète le dernier thread avec les opérations qui serait restante dans le cas où la division en MAXTHREADS n'est pas entière
+            if (i == MAXTHREADS-1)
+                nbComputePerThread = nbRabbit - count;
+
+            drawPartFunc.push_back(std::async(  std::launch::async,
+                                                [&sexDist](const rabbits_t nbCompute)
+                                                {
+                                                    rabbits_t nbFemales = 0;
+
+                                                    for (rabbits_t i = 0 ; i < nbCompute ; i++)
+                                                        if (sexDist(randEngine) == 1)
+                                                            nbFemales++;
+
+                                                    return nbFemales;
+                                                },
+                                                nbComputePerThread));
+            count += nbComputePerThread;
+        }
+
+        // Attend la fin de chacun des threads
+        for (unsigned int i = 0 ; i < MAXTHREADS ; i++)
+            nbFemales += drawPartFunc[i].get();
     }
+    else
+    {
+#endif  // endif MULTI_THREADING
+        for (rabbits_t i = 0 ; i < nbRabbit ; i++)
+        {
+            // Tire au sort le sexe du lapereau
+            if (sexDist(randEngine) == 1)   // 0 = mâle | 1 = femelle
+                nbFemales++;
+        }
+#if defined(MULTI_THREADING)
+    }
+#endif  // endif MULTI_THREADING
+
+    m_youngRabbits[0].first += nbFemales;  // Augmente le nombre de femelles
+    m_youngRabbits[0].second += (nbRabbit - nbFemales); // Augmente le nombre de mâles
 }
 
 std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
