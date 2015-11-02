@@ -1,8 +1,11 @@
 #include <iostream>
 
+/*#include <QApplication>
+#include <QMainWindow>*/
+
 #include "simulation.h"
 
-int main()
+int main(int /*argc*/, char** /*argv*/)
 {
     //const unsigned int nbMonth = 180;
     const unsigned int nbMonth = 100;
