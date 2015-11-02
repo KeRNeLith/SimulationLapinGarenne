@@ -77,19 +77,34 @@ void YoungRabbit::addYoungRabbit(const rabbits_t nbRabbit)
 
 std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
 {
+    // Lois de distribution pour le taux de survie
+    std::uniform_int_distribution<> survivalDist(0, 99);
+
     std::vector< std::pair< rabbits_t, rabbits_t > > newAdultsByMonth(5, std::make_pair(0, 0)); // Stocke les évolutions à l'âge adulte des lapereaux (du mois 5 à 9)
     // Les lapereaux de plus de 8 mois passe automatiquement adultes
-    // TODO appliquer de vrai taux de survie aléatoire
-    newAdultsByMonth[4].first = (rabbits_t)(20 / 100.0) * m_youngRabbits[m_youngRabbits.size()-1].first;                // TODO A revoir, modifier 20% par une valeur plus adéquate
-    newAdultsByMonth[4].second = (rabbits_t)(20 / 100.0) * m_youngRabbits[m_youngRabbits.size() - 1].second;			// TODO A revoir, modifier 20% par une valeur plus adéquate
+    // Femelles
+    rabbits_t nbFemalesAdult = 0;                           // Nombre de femelle passant véritablement adulte
+    const rabbits_t nbFemales = newAdultsByMonth[4].first;  // Nombre de femelle devant passé adulte
+    for (rabbits_t i = 0 ; i < nbFemales ; i++)
+         if (survivalDist(randEngine) < 20)     // TODO A revoir, modifier 20% par une valeur plus adéquate
+             nbFemalesAdult++;
+    // Mâles
+    rabbits_t nbMalesAdult = 0;                            // Nombre de mâles passant véritablement adulte
+    const rabbits_t nbMales = newAdultsByMonth[4].second;  // Nombre de mâles devant passé adulte
+    for (rabbits_t i = 0 ; i < nbMales ; i++)
+         if (survivalDist(randEngine) < 20)     // TODO A revoir, modifier 20% par une valeur plus adéquate
+             nbMalesAdult++;
+
+    // Affecte les lapereaux (9 mois) ayant survécus aux adultes automatiquement
+    newAdultsByMonth[4].first = nbFemalesAdult;
+    newAdultsByMonth[4].second = nbMalesAdult;
 
     // Fait progresser les lapereaux d'un mois
     for (unsigned int i = m_youngRabbits.size()-1 ; i > 0 ; i--)
         m_youngRabbits[i] = m_youngRabbits[i-1];
     m_youngRabbits[0] = std::make_pair(0, 0);
 
-    // Lois de distribution pour le taux de survie et la chance de passer à la maturité adulte
-    std::uniform_int_distribution<> survivalDist(0, 99);
+    // Lois de distribution pour passer à la maturité adulte
     std::uniform_int_distribution<> distribution(0, 3); // TODO distri pour le mois de maturité ==> gaussien
 
     // Parcours des lapereaux qui sont candidats à l'évolution en maturité adulte

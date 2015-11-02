@@ -24,32 +24,6 @@ Simulation::~Simulation()
 
 void Simulation::simulateNextMonth()
 {
-    /*const unsigned int nbRabbits = m_lapereau.size();
-
-    const unsigned int nbComputePerAsync = nbRabbits/maxNbThread;
-    unsigned int begin = 0;
-    unsigned int end;
-    std::vector< std::future<void> > updateAgePartFunc;
-    for (unsigned int i = 0 ; i < maxNbThread ; ++i)
-    {
-        end = begin + nbComputePerAsync - 1;
-        if (i == maxNbThread-1)
-            end = nbRabbits-1;
-
-        updateAgePartFunc.push_back(std::async( std::launch::async,
-                                                [this](const unsigned int begin, const unsigned int end)
-                                                {
-                                                    for (unsigned int i = begin ; i <= end ; ++i)
-                                                        m_lapereau[i].updateAge();
-                                                },
-                                                begin,
-                                                end));
-        begin += nbComputePerAsync;
-    }
-
-    for (unsigned int i = 0 ; i < maxNbThread ; ++i)
-        updateAgePartFunc[i].get();*/
-
     /// Boucle principale de la simulation d'un mois
     const unsigned int currentMonthIndex = m_monthSimulated % 12;
 
