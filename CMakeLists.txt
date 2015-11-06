@@ -1,4 +1,4 @@
-project(CroissancePopulation CXX)
+project(CroissancePopulation)
 cmake_minimum_required(VERSION 2.8.11)
 
 # Find Qt5
@@ -6,7 +6,7 @@ find_package(Qt5Widgets) # The QtWidgets module finds its own dependencies (QtCo
 
 set(ENABLE_MULTITHREADS true CACHE BOOL "Build project with multithreading.")
 if (ENABLE_MULTITHREADS)
-    find_package(Threads REQUIRED)
+    find_package(Threads)
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-pthread")
     add_definitions( -DMULTI_THREADING )
 endif()
