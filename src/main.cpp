@@ -12,11 +12,13 @@ int main(int /*argc*/, char** /*argv*/)
 
     Simulation simu;
     simu.writeToFile("simu.log");
-    for (unsigned int i = 0 ; i < nbMonth ; i++)
+	unsigned int i = 0;
+    while(simu.getNbRabbit() < 10000000000)
     {
         simu.simulateNextMonth();
         simu.writeToFile("simu.log");
-        std::cout <<"Mois " << i+1 << " => Nombre de lapin : " << simu.getNbRabbit() << std::endl;
+        std::cout <<"Mois " << ++i << " => Nombre de lapin : " << simu.getNbRabbit() << std::endl;
+		
     }
 
     return 0;
