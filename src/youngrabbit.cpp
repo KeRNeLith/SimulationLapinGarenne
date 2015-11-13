@@ -75,24 +75,31 @@ void YoungRabbit::addYoungRabbit(const rabbits_t nbRabbit)
     m_youngRabbits[0].second += (nbRabbit - nbFemales); // Augmente le nombre de mâles
 }
 
+
+/* TODO : pour la mise en place de la gaussienne changer la structure de données, passer en vecteur de vecteur de paires
+	pour répartir qui sera adulte au bout de combien de temps */
+
 std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
 {
     // Lois de distribution pour le taux de survie
     std::uniform_int_distribution<> survivalDist(0, 99);
 
     std::vector< std::pair< rabbits_t, rabbits_t > > newAdultsByMonth(5, std::make_pair(0, 0)); // Stocke les évolutions à l'âge adulte des lapereaux (du mois 5 à 9)
-    // Les lapereaux de plus de 8 mois passe automatiquement adultes
-    // Femelles
-    rabbits_t nbFemalesAdult = 0;                           // Nombre de femelle passant véritablement adulte
-    const rabbits_t nbFemales = newAdultsByMonth[4].first;  // Nombre de femelle devant passé adulte
+	const int survivalRate = (4 / (double) 12) * 20 + 20;							// Taux de survie pour les lapins passant automatiquement adultes
+	// Les lapereaux de plus de 8 mois passent automatiquement adultes
+    
+	// Femelles
+    rabbits_t nbFemalesAdult = 0;                           // Nombre de femelles passant véritablement adulte
+    const rabbits_t nbFemales = m_youngRabbits[8].first;	// Nombre de femelles devant passer adulte
+	
     for (rabbits_t i = 0 ; i < nbFemales ; i++)
-         if (survivalDist(randEngine) < 20)     // TODO A revoir, modifier 20% par une valeur plus adéquate
+         if (survivalDist(randEngine) < survivalRate )
              nbFemalesAdult++;
     // Mâles
-    rabbits_t nbMalesAdult = 0;                            // Nombre de mâles passant véritablement adulte
-    const rabbits_t nbMales = newAdultsByMonth[4].second;  // Nombre de mâles devant passé adulte
+    rabbits_t nbMalesAdult = 0;								// Nombre de mâles passant véritablement adulte
+    const rabbits_t nbMales = m_youngRabbits[8].second;		// Nombre de mâles devant passé adulte
     for (rabbits_t i = 0 ; i < nbMales ; i++)
-         if (survivalDist(randEngine) < 20)     // TODO A revoir, modifier 20% par une valeur plus adéquate
+         if (survivalDist(randEngine) < survivalRate)
              nbMalesAdult++;
 
     // Affecte les lapereaux (9 mois) ayant survécus aux adultes automatiquement
@@ -108,8 +115,11 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
     std::uniform_int_distribution<> distribution(0, 3); // TODO distri pour le mois de maturité ==> gaussien
 
     // Parcours des lapereaux qui sont candidats à l'évolution en maturité adulte
-    for (unsigned int i = 5, monthsIndex = 0 ; i < m_youngRabbits.size() - 1 ; i++, monthsIndex++)
+    for (unsigned int i = 5, monthsIndex = 0 ; i < m_youngRabbits.size() ; i++, monthsIndex++)
     {
+		// Calcul du taux de survie
+		int survivalRate2 = ((12 - i) / 12) * 20 + 20;		// Taux de survie du lapereau selon le mois
+
         // Nombre de passage à la maturité adulte pour les mâles et les femelles pour la génération courante
         rabbits_t nbAdultsF = 0;
         rabbits_t nbAdultsM = 0;
@@ -124,7 +134,7 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
             {
                 nbAdultsF++;
                 // On verifie que le lapin survit à sa periode lapereau (20%)
-                if (survivalDist(randEngine) < 20)					// TODO revoir la valeur de 20% ==> évolutif en fonction de la période
+                if (survivalDist(randEngine) < survivalRate2)
                     newAdultsByMonth[monthsIndex].first++;
             }
         }
@@ -139,7 +149,7 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
             {
                 nbAdultsM++;
                 // On verifie que le lapin survit à sa periode lapereau (20%)
-                if (survivalDist(randEngine) < 20)
+                if (survivalDist(randEngine) < survivalRate2)
                     newAdultsByMonth[monthsIndex].second++;
             }
         }
