@@ -1,3 +1,6 @@
+# General Dir
+doc/*
+
 # Compiled Object files
 *.slo
 *.lo
