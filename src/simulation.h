@@ -20,7 +20,7 @@ private:
 
     /**
      * @brief affectLitters Affecte tous les lapereaux issues des portées générées aux bons mois en les ajoutants à ceux qui existent déjà.
-     * NOTE : Ces lapereaux ne sont pas encore nés, il ne verront le jours que lorsque les mois en question seront mis à jour)
+     * NOTE : Ces lapereaux ne sont pas encore nés, ils ne verront le jour que lorsque les mois en question seront mis à jour)
      * @param litters Tableau des portées par mois (Chaque indice i contient le nombre de lapereaux qui verront le jour au i-ème mois).
      */
     void affectLitters(const std::vector<rabbits_t> litters);
@@ -50,9 +50,10 @@ public:
 	* @brief writeToCSV Enregistre les données de simulation actuelles dans un fichier .csv pour tracé depuis un tableur.
 	* @param filename Nom du fichier dans lequel enregistrer.
 	* @param totalFibo Nombre de lapins au total calculé par Fibonacci.
+	* @param time Temps contenu dans un double indiquant au bout de combien de temps le mois donné a été simulé.
 	* @param entete Ordonne à la méthode d'écrire l'entête CSV ou non.
 	*/
-	void writeToCSV(const std::string& filename, const rabbits_t totalFibo, const bool entete);
+	void writeToCSV(const std::string& filename, const rabbits_t totalFibo, const double time, const bool entete);
 
     /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapins vivants dans la simulation.

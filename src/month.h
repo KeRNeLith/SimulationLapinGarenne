@@ -76,7 +76,7 @@ public:
     rabbits_t giveBirth();
 
     /**
-     * @brief getMaleAdults Récupère le nombre de lapins mâles répartient par année.
+     * @brief getMaleAdults Récupère le nombre de lapins mâles répartis par année.
      * @return Tableau du nombre de lapins adultes mâles par tranches d'âge.
      */
     std::vector< rabbits_t > getMaleAdults() const;
@@ -94,7 +94,7 @@ public:
     rabbits_t getNbRabbit() const;
 
     /**
-     * @brief monthName Retourne le nom mois correspondant.
+     * @brief monthName Retourne le nom du mois correspondant.
      * @return Nom du mois courant.
      */
     const std::string monthName() const;

@@ -97,10 +97,8 @@ void Simulation::writeToFile(const std::string& filename)
     }
 }
 
-void Simulation::writeToCSV(const std::string& filename, const rabbits_t totalFibo, const bool entete)
+void Simulation::writeToCSV(const std::string& filename, const rabbits_t totalFibo, const double time, const bool entete)
 {
-
-	// Ecrit les données de simulation dans un fichier CSV
 	std::ofstream file;
 
 	file.open(filename.c_str(), std::fstream::out | std::fstream::app);
@@ -111,7 +109,7 @@ void Simulation::writeToCSV(const std::string& filename, const rabbits_t totalFi
 		if (entete)
 			file << "Month,Nb Rabbit Total,Nb Adults Male,Nb Adults Female"
 				<< ",Nb Young Rabbit Male,Nb Young Rabbit Female,Nb Litters"
-				<< ",Nb Fibonacci Total" << std::endl;
+				<< ",Nb Fibonacci Total, Time" << std::endl;
 
 		file << m_monthSimulated << "," << getNbRabbit() << ",";
 		for (unsigned int i = 0; i < m_months.size(); i++) {
@@ -136,7 +134,7 @@ void Simulation::writeToCSV(const std::string& filename, const rabbits_t totalFi
 		for (unsigned int i = 0; i < m_months.size(); i++)
 			nbLitters += m_months[i].getNewBorns();
 		
-		file << nbLitters << "," << totalFibo << std::endl;
+		file << nbLitters << "," << totalFibo << "," << time << std::endl;
 		file.close();
 	}
 }

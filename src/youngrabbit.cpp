@@ -85,7 +85,7 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
     std::uniform_int_distribution<> survivalDist(0, 99);
 
     std::vector< std::pair< rabbits_t, rabbits_t > > newAdultsByMonth(5, std::make_pair(0, 0)); // Stocke les évolutions à l'âge adulte des lapereaux (du mois 5 à 9)
-	const int survivalRate = (4 / (double) 12) * 20 + 20;							// Taux de survie pour les lapins passant automatiquement adultes
+	const int survivalRate = (4 / (double) 12) * 20 + 20;										// Taux de survie pour les lapins passant automatiquement adultes
 	// Les lapereaux de plus de 8 mois passent automatiquement adultes
     
 	// Femelles
@@ -111,8 +111,8 @@ std::vector< std::pair<rabbits_t, rabbits_t> > YoungRabbit::update()
         m_youngRabbits[i] = m_youngRabbits[i-1];
     m_youngRabbits[0] = std::make_pair(0, 0);
 
-    // Lois de distribution pour passer à la maturité adulte
-    std::uniform_int_distribution<> distribution(0, 3); // TODO distri pour le mois de maturité ==> gaussien
+    // Lois de distribution pour passer à la maturité adulte	
+	std::uniform_int_distribution<> distribution(0, 3);		// On considère comme equiprobable les chances de passer adultes prématurément
 
     // Parcours des lapereaux qui sont candidats à l'évolution en maturité adulte
     for (unsigned int i = 5, monthsIndex = 0 ; i < m_youngRabbits.size() ; i++, monthsIndex++)
