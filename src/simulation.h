@@ -44,7 +44,12 @@ public:
      * @brief writeToFile Enregistre les données de simulation actuelles dans un fichier.
      * @param filename Nom du fichier dans lequel enregistrer.
      */
-    void writeToFile(const std::string& filename);
+    /**
+     * @brief writeToFile Enregistre les données de simulation actuelles dans un fichier.
+     * @param filename Nom du fichier dans lequel enregistrer.
+     * @param time Temps écoulé depuis le début de la simulation.
+     */
+    void writeToFile(const std::string& filename, const double time);
 
 	/**
 	* @brief writeToCSV Enregistre les données de simulation actuelles dans un fichier .csv pour tracé depuis un tableur.

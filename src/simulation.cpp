@@ -51,7 +51,7 @@ void Simulation::simulateNextMonth()
     m_monthSimulated++;
 }
 
-void Simulation::writeToFile(const std::string& filename)
+void Simulation::writeToFile(const std::string& filename, const double time)
 {
     // Ecrit les données de simulation dans un fichier
     std::ofstream file;
@@ -60,6 +60,7 @@ void Simulation::writeToFile(const std::string& filename)
     if (!file.fail())
     {
         file << "---------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+        file << "Time : " << time << "s" << std::endl;
         file << "Mois simulé : " << m_monthSimulated << std::endl << std::endl;
         file.close();
     }
