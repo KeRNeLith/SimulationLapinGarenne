@@ -46,6 +46,14 @@ public:
      */
     void writeToFile(const std::string& filename);
 
+	/**
+	* @brief writeToCSV Enregistre les données de simulation actuelles dans un fichier .csv pour tracé depuis un tableur.
+	* @param filename Nom du fichier dans lequel enregistrer.
+	* @param totalFibo Nombre de lapins au total calculé par Fibonacci.
+	* @param entete Ordonne à la méthode d'écrire l'entête CSV ou non.
+	*/
+	void writeToCSV(const std::string& filename, const rabbits_t totalFibo, const bool entete);
+
     /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapins vivants dans la simulation.
      * @return Nombre de lapins vivants dans la simulation.

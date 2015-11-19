@@ -176,6 +176,23 @@ void YoungRabbit::writeToFile(const std::string& filename)
     }
 }
 
+void YoungRabbit::writeToCSV(const std::string& filename)
+{
+	rabbits_t nbMale = 0, nbFemale = 0;
+	std::ofstream file;
+	file.open(filename.c_str(), std::fstream::out | std::fstream::app);
+
+	if (!file.fail())
+	{
+		for (unsigned int i = 0; i < m_youngRabbits.size(); i++) {
+			nbMale += m_youngRabbits[i].first;
+			nbFemale += m_youngRabbits[i].second;
+		}
+		file << nbMale << "," << nbFemale << ",";
+		file.close();
+	}
+}
+
 rabbits_t YoungRabbit::getNbRabbit() const
 {
     rabbits_t count = 0;

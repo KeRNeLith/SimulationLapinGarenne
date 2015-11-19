@@ -49,6 +49,12 @@ public:
      */
     void writeToFile(const std::string& filename);
 
+	/**
+	* @brief writeToCSV Ecrit le nombre de lapereaux mâles et femelles à la suite du fichier CSV
+	* @param filename Nom du fichier CSV dans lequel enregistrer.
+	*/
+	void writeToCSV(const std::string& filename);
+
     /**
      * @brief getNbRabbit Calcul et retourne le nombre total de lapereau vivants dans la simulation.
      * @return Nombre de lapereaux vivants dans la simulation.

@@ -82,7 +82,7 @@ public:
     std::vector< rabbits_t > getMaleAdults() const;
 
     /**
-     * @brief getFemaleAdults Récupère le nombre de lapins femelles répartient par année.
+     * @brief getFemaleAdults Récupère le nombre de lapins femelles réparties par année.
      * @return Tableau du nombre de lapins adultes femelles par tranches d'âge.
      */
     std::vector< rabbits_t > getFemaleAdults() const;
