@@ -2,8 +2,6 @@
 
 #include <iomanip>
 #include <fstream>
-#include <future>
-#include <thread>
 
 #include "general/general.h"
 
@@ -14,7 +12,7 @@ Simulation::Simulation()
     for (unsigned int i = 0 ; i < 12 ; i++)
         m_months.push_back(Month(i));
 
-    // TODO REMOVE Test avec une population de depart
+    // Population de depart (cf. Australie)
     m_youngRabbits.addYoungRabbit(24);
 }
 
